@@ -20,7 +20,12 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public User find(User user) {
-        return usersDao.getUserById(user.getId());
+        return find(user.getId());
+    }
+
+    @Override
+    public User find(int id) {
+        return usersDao.getUserById(id);
     }
 
     @Override
@@ -30,7 +35,12 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public void update(User oldUser, User newUser) {
-        usersDao.update(oldUser, newUser);
+        update(oldUser.getId(), newUser);
+    }
+
+    @Override
+    public void update(int id, User newUser) {
+        usersDao.update(id, newUser);
     }
 
     @Override

@@ -1,5 +1,7 @@
 <%@ page pageEncoding="UTF-8" session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,72 +15,64 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
           integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
           crossorigin="anonymous">
+    <script src="https://use.fontawesome.com/00550c2ed3.js"></script>
 </head>
 <body>
 
-<div class="container-fluid">
-
-    <br>
-    <h3>Users</h3>
-    <br>
-
-    <table class="table table-sm">
-        <thead class="thead-light">
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Login</th>
-            <th scope="col">Name</th>
-            <th scope="col">Phone</th>
-            <th scope="col">E-Mail</th>
-            <th scope="col">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${usersList}" var="user">
-            <tr>
-                <td>${user.id}</td>
-                <td>${user.login}</td>
-                <td>${user.firstName}</td>
-                <td>${user.lastName}</td>
-                <td>${user.email}</td>
-                <td>
-                    <div class="btn-toolbar" role="toolbar" aria-label="actionsToolbar">
-                        <div class="btn-group mr-2" role="group" aria-label="editGroup">
-                            <form action="edit" method="get">
-                                <input type="hidden" name="userId" value="${user.id}">
-                                <button type="submit" class="btn btn-primary">Edit</button>
-                            </form>
-                        </div>
-                        <div class="btn-group mr-2" role="group" aria-label="deleteGroup">
-                            <form action="delete" method="post">
-                                <input type="hidden" name="userId" value="${user.id}">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-
-    <br>
-
-    <div class="btn-toolbar" role="toolbar" aria-label="adminActionsToolbar">
-        <div class="btn-group mr-2" role="group" aria-label="adminAddUserGroup">.
-            <form action="add" method="get">
-                <button type="submit" class="btn btn-primary">New user</button>
-            </form>
-        </div>
-        <div class="btn-group mr-2" role="group" aria-label="adminLogoutGroup">
-            <form action="logout" method="post">
-                <button class="btn btn-success" type="submit">Logout</button>
-            </form>
-        </div>
+<section>
+    <div class="container-fluid">
+        <h3>Users</h3>
     </div>
+</section>
 
-</div>
+<section>
+    <div class="container-fluid">
 
+        <table class="table table-sm table-striped">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Login</th>
+                <th scope="col">Role</th>
+                <th scope="col">First name</th>
+                <th scope="col">Last name</th>
+                <th scope="col">E-Mail</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${usersList}" var="user">
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.login}</td>
+                    <td>${user.role}</td>
+                    <td>${user.firstName}</td>
+                    <td>${user.lastName}</td>
+                    <td>${user.email}</td>
+                    <td>
+                        <a
+                                href="<spring:url value="/spring-users/list/edit?id=${user.id}"/>"
+                                class="btn btn-primary btn-sm">
+                            <i class="fa fa-pencil" aria-hidden="true"></i> Edit
+                        </a>
+
+                        <a
+                                href="<spring:url value="/spring-users/list/delete?id=${user.id}"/>"
+                                class="btn btn-danger btn-sm">
+                            <i class="fa fa-times" aria-hidden="true"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="container-fluid">
+    <a href="<spring:url value="/spring-users/list/create"/>" class="btn btn-primary">Create user</a>
+    <a href="<spring:url value="/spring-users/list/logout"/>" class="btn btn-success">Logout</a>
+</section>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

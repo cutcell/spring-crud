@@ -12,8 +12,8 @@ public class UsersDaoImpl implements UsersDao {
 
     public UsersDaoImpl() {
 
-        users.add(new User(0, "admin", "admin", "Admin", "", "admin@admin"));
-        users.add(new User(1, "user", "", "User", "", "user@user"));
+        users.add(new User(0, "admin", "admin", "admin", "Admin", "", "admin@admin"));
+        users.add(new User(1, "user", "", "user", "User", "", "user@user"));
 
     }
 

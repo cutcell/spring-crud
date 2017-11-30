@@ -4,7 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title>New user</title>
+    <title>Edit user</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,9 +18,18 @@
 
 <section class="container-fluid">
 
-    <form:form method="post" modelAttribute="newUser" class="form-horizontal">
+    <form:form method="post" modelAttribute="editUser" class="form-horizontal">
+
         <fieldset>
-            <legend>New user</legend>
+
+            <legend>Edit user</legend>
+
+            <div class="form-group row">
+                <label class="col-form-label col-sm-1" for="idFormInput">ID</label>
+                <div class="col-sm-2">
+                    <form:input path="id" id="idFormInput" type="text" class="form-control" readonly="true"/>
+                </div>
+            </div>
 
             <div class="form-group row">
                 <label class="col-form-label col-sm-1" for="loginFormInput">Login</label>
@@ -32,7 +41,7 @@
             <div class="form-group row">
                 <label class="col-form-label col-sm-1" for="passwordFormInput">Password</label>
                 <div class="col-sm-2">
-                    <form:input path="password" id="passwordFormInput" type="password" class="form-control"/>
+                    <form:input path="password" id="passwordFormInput" type="text" class="form-control"/>
                 </div>
             </div>
 
@@ -66,13 +75,13 @@
 
             <div class="form-group row">
                 <div class="col-sm-2">
-                    <input type="submit" id="btnSave" class="btn btn-success" value="Create">
+                    <input type="submit" id="btnSave" class="btn btn-success" value="Save">
                 </div>
             </div>
 
         </fieldset>
-    </form:form>
 
+    </form:form>
 
 </section>
 

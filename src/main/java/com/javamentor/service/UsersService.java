@@ -10,9 +10,13 @@ public interface UsersService {
 
     User find(User user);
 
+    User find(int id);
+
     void create(User newUser);
 
     void update(User oldUser, User newUser);
+
+    void update(int id, User newUser);
 
     void delete(User user);
 
