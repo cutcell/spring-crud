@@ -1,61 +1,86 @@
 package com.javamentor.dao;
 
 import com.javamentor.model.User;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.List;
 
 @Repository
 public class UsersDaoImpl implements UsersDao {
 
-    private List<User> users = new ArrayList<>();
+    @Autowired
+    SessionFactory sessionFactory;
 
     public UsersDaoImpl() {
-
-        users.add(new User(0, "admin", "admin", "admin", "Admin", "", "admin@admin"));
-        users.add(new User(1, "user", "", "user", "User", "", "user@user"));
 
     }
 
     @Override
     public List<User> getAllUsers() {
-        return users;
+
+        return getSession().createQuery("from User").list();
+
     }
 
     @Override
     public User getUserById(int id) {
 
-        return users.stream()
-                .filter(u -> u.getId() == id)
-                .findFirst()
-                .orElse(new User());
+        return getSession().find(User.class, id);
 
     }
 
     @Override
     public User getUserByLogin(String login) {
 
-        return users.stream()
-                .filter(u -> u.getLogin() == login)
-                .findFirst()
-                .orElse(new User());
+        Query qr = getSession().createQuery("from Users u where u.login=:login");
+        qr.setParameter("login", login);
+
+        List resultList = qr.getResultList();
+
+        if (resultList.isEmpty()) {
+            return null;
+        }
+
+        return (User) resultList.get(0);
 
     }
 
     @Override
     public void insert(User newUser) {
-        users.add(newUser);
+
+        getSession().save(newUser);
+
     }
 
     @Override
     public void update(int id, User user) {
+
         User foundUser = getUserById(id);
-        Collections.replaceAll(users, foundUser, user);
+
+        foundUser.setLogin(user.getLogin());
+        foundUser.setPassword(user.getPassword());
+        foundUser.setRole(user.getRole());
+        foundUser.setFirstName(user.getFirstName());
+        foundUser.setLastName(user.getLastName());
+        foundUser.setEmail(user.getEmail());
+
+        getSession().update(foundUser);
+
     }
 
     @Override
     public void delete(int id) {
-        User foundUser = getUserById(id);
-        users.remove(foundUser);
+
+        getSession().delete(getUserById(id));
+
     }
+
+    private Session getSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
 }

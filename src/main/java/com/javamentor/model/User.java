@@ -1,13 +1,35 @@
 package com.javamentor.model;
 
-public class User {
+import javax.persistence.*;
+import java.io.Serializable;
 
+@Entity
+@Table(name = "USERS")
+public class User implements Serializable {
+
+    private static final long serialVersionUID = -7209138017477931350L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private int id;
+
+    @Column
     private String login;
+
+    @Column
     private String password;
+
+    @Column
     private String role;
+
+    @Column
     private String firstName;
+
+    @Column
     private String lastName;
+
+    @Column
     private String email;
 
     public User() {

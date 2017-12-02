@@ -1,21 +1,23 @@
 package com.javamentor.service;
 
 import com.javamentor.dao.UsersDao;
-import com.javamentor.dao.UsersDaoImpl;
 import com.javamentor.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class UsersServiceImpl implements UsersService {
 
-    private UsersDao usersDao = new UsersDaoImpl();
+    @Autowired
+    private UsersDao dao;
 
     @Override
-
     public List<User> getAllUsers() {
-        return usersDao.getAllUsers();
+        return dao.getAllUsers();
     }
 
     @Override
@@ -25,12 +27,12 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public User find(int id) {
-        return usersDao.getUserById(id);
+        return dao.getUserById(id);
     }
 
     @Override
     public void create(User newUser) {
-        usersDao.insert(newUser);
+        dao.insert(newUser);
     }
 
     @Override
@@ -40,11 +42,11 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public void update(int id, User newUser) {
-        usersDao.update(id, newUser);
+        dao.update(id, newUser);
     }
 
     @Override
     public void delete(User user) {
-        usersDao.delete(user);
+        dao.delete(user);
     }
 }
