@@ -4,67 +4,57 @@ import com.javamentor.model.User;
 import com.javamentor.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("list")
+@RequestMapping("adm")
 public class UsersController {
 
     @Autowired
     private UsersService usersService;
 
-    @RequestMapping("/view")
-    public ModelAndView viewUsers() {
+    @RequestMapping(value = "/view")
+    public String viewUsers(Model model) {
 
-        return new ModelAndView("view", "usersList", usersService.getAllUsers());
+        model.addAttribute("usersList", usersService.getAll());
+        return "view";
 
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.GET)
-    public ModelAndView editUser(@RequestParam("id") String userId) {
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public String editUser(@PathVariable Integer id, Model model) {
 
-        return new ModelAndView("edit", "editUser", usersService.find(Integer.parseInt(userId)));
+        model.addAttribute("user", usersService.findByKey(id));
+        return "create-edit";
 
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public ModelAndView processEditUser(@ModelAttribute("editUser") User editUser) {
+    public String processEditUser(@ModelAttribute("user") User user) {
 
-        usersService.update(editUser.getId(), editUser);
-        return new ModelAndView("redirect:view");
-
-    }
-
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public ModelAndView createUser() {
-
-        return new ModelAndView("create", "newUser", new User());
+        usersService.update(user);
+        return "redirect:view";
 
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ModelAndView processCreateUser(@ModelAttribute("newUser") User newUser) {
+    @RequestMapping(value = "/create")
+    public String createUser(Model model) {
 
-        usersService.create(newUser);
-        return new ModelAndView("redirect:view");
-
-    }
-
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public ModelAndView deleteUser(@RequestParam("id") String userId) {
-
-        usersService.delete(usersService.find(Integer.parseInt(userId)));
-        return new ModelAndView("redirect:view");
+        model.addAttribute("user", new User());
+        return "create-edit";
 
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
-    public ModelAndView logout() {
-        return new ModelAndView("welcome");
+    @RequestMapping(value = "/delete/{id}")
+    public String deleteUser(@PathVariable("id") Integer id, Model model) {
+
+        usersService.deleteByKey(id);
+        return "redirect:view";
+
     }
 
 }

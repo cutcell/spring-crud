@@ -51,13 +51,13 @@
                     <td>${user.email}</td>
                     <td>
                         <a
-                                href="<spring:url value="/spring-users/list/edit?id=${user.id}"/>"
+                                href="<spring:url value="/adm/edit?id=${user.id}"/>"
                                 class="btn btn-primary btn-sm">
                             <i class="fa fa-pencil" aria-hidden="true"></i> Edit
                         </a>
 
                         <a
-                                href="<spring:url value="/spring-users/list/delete?id=${user.id}"/>"
+                                href="<spring:url value="/adm/delete?id=${user.id}"/>"
                                 class="btn btn-danger btn-sm">
                             <i class="fa fa-times" aria-hidden="true"></i> Delete
                         </a>
@@ -70,20 +70,9 @@
 </section>
 
 <section class="container-fluid">
-    <a href="<spring:url value="/spring-users/list/create"/>" class="btn btn-primary">Create user</a>
-    <a href="<spring:url value="/spring-users/list/logout"/>" class="btn btn-success">Logout</a>
+    <a href="<spring:url value="/adm/create"/>" class="btn btn-primary">Create user</a>
+    <a href="<spring:url value="/logout"/>" class="btn btn-success">Logout</a>
 </section>
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
-        crossorigin="anonymous"></script>
 
 </body>
 </html>

@@ -1,18 +1,14 @@
 package com.javamentor.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.Collection;
+import java.util.Set;
 
 @Entity
-@Table(name = "USERS")
-public class User implements Serializable {
-
-    private static final long serialVersionUID = -7209138017477931350L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private int id;
+public class User extends AbstractModel implements UserDetails {
 
     @Column
     private String login;
@@ -20,8 +16,11 @@ public class User implements Serializable {
     @Column
     private String password;
 
-    @Column
-    private String role;
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class)
+    @JoinTable(name = "permissions",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private Set<Role> role;
 
     @Column
     private String firstName;
@@ -32,31 +31,41 @@ public class User implements Serializable {
     @Column
     private String email;
 
+    @Column
+    private Boolean enabled = true;
+
     public User() {
 
-        this(0, "", "", "user", "", "", "");
-
     }
 
-    public User(int id, String login, String password, String role, String firstName, String lastName,
-                String email) {
-
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.role = role;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return role;
     }
 
-    public int getId() {
-        return id;
+    @Override
+    public String getUsername() {
+        return login;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public String getLogin() {
@@ -99,11 +108,15 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getRole() {
+    public Set<Role> getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Set<Role> role) {
         this.role = role;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }
