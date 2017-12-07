@@ -10,9 +10,7 @@ public interface CrudService<T extends AbstractModel, PK> {
 
     T findByKey(PK key);
 
-    void update(T entity);
-
-    void save(T entity);
+    void persist(T entity);
 
     void deleteByKey(PK key);
 

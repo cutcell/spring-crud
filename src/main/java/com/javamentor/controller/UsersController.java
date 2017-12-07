@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping("adm")
+@RequestMapping("/adm")
 public class UsersController {
 
     @Autowired
@@ -20,12 +20,12 @@ public class UsersController {
     @RequestMapping(value = "/view")
     public String viewUsers(Model model) {
 
-        model.addAttribute("usersList", usersService.getAll());
+        model.addAttribute("users", usersService.getAll());
         return "view";
 
     }
 
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit/{id}")
     public String editUser(@PathVariable Integer id, Model model) {
 
         model.addAttribute("user", usersService.findByKey(id));
@@ -34,10 +34,10 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String processEditUser(@ModelAttribute("user") User user) {
+    public String processEditUser(@ModelAttribute User user) {
 
-        usersService.update(user);
-        return "redirect:view";
+        usersService.persist(user);
+        return "redirect:/adm/view";
 
     }
 
@@ -50,10 +50,10 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/delete/{id}")
-    public String deleteUser(@PathVariable("id") Integer id, Model model) {
+    public String deleteUser(@PathVariable Integer id, Model model) {
 
         usersService.deleteByKey(id);
-        return "redirect:view";
+        return "redirect:/adm/view";
 
     }
 

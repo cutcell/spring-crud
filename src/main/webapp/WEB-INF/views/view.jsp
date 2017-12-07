@@ -41,7 +41,7 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${usersList}" var="user">
+            <c:forEach items="${users}" var="user">
                 <tr>
                     <td>${user.id}</td>
                     <td>${user.login}</td>
@@ -51,13 +51,13 @@
                     <td>${user.email}</td>
                     <td>
                         <a
-                                href="<spring:url value="/adm/edit?id=${user.id}"/>"
+                                href="<spring:url value="/adm/edit/${user.id}"/>"
                                 class="btn btn-primary btn-sm">
                             <i class="fa fa-pencil" aria-hidden="true"></i> Edit
                         </a>
 
                         <a
-                                href="<spring:url value="/adm/delete?id=${user.id}"/>"
+                                href="<spring:url value="/adm/delete/${user.id}"/>"
                                 class="btn btn-danger btn-sm">
                             <i class="fa fa-times" aria-hidden="true"></i> Delete
                         </a>

@@ -18,7 +18,7 @@
 
 <section class="container">
 
-    <form:form method="post" modelAttribute="user" class="form-horizontal">
+    <form:form method="post" modelAttribute="user" class="form-horizontal" action="save">
 
         <legend>Edit</legend>
 
@@ -61,7 +61,7 @@
 
         <div class="form-group row">
             <div class="col-sm-2">
-                <input type="submit" id="btnSave" class="btn btn-success" value="Save">
+                <input type="submit" class="btn btn-success" value="Save">
             </div>
         </div>
 

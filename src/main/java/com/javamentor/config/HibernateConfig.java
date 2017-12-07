@@ -1,6 +1,5 @@
 package com.javamentor.config;
 
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -8,10 +7,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -19,19 +22,21 @@ import java.util.Properties;
 @ComponentScan("com.javamentor")
 @EnableTransactionManagement
 @PropertySource("classpath:db.properties")
-public class HibernateConfig {
+public class HibernateConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private Environment env;
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
 
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(DataSource());
-        sessionFactory.setPackagesToScan("com.javamentor.model");
-        sessionFactory.setHibernateProperties(getHibernateProperties());
-        return sessionFactory;
+        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+        emf.setDataSource(dataSource);
+        emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        emf.setJpaDialect(new HibernateJpaDialect());
+        emf.setPackagesToScan("com.javamentor");
+        emf.setJpaProperties(getHibernateProperties());
+        return emf;
 
     }
 
@@ -47,10 +52,10 @@ public class HibernateConfig {
     }
 
     @Bean
-    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
+    public JpaTransactionManager transactionManager(EntityManagerFactory emf) {
 
-        HibernateTransactionManager txManager = new HibernateTransactionManager();
-        txManager.setSessionFactory(sessionFactory);
+        JpaTransactionManager txManager = new JpaTransactionManager();
+        txManager.setEntityManagerFactory(emf);
         return txManager;
 
     }

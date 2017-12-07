@@ -11,9 +11,7 @@ public interface CrudDao<T extends AbstractModel, PK extends Serializable> {
 
     T findByKey(PK key);
 
-    void update(T entity);
-
-    void save(T entity);
+    void persist(T entity);
 
     void deleteByKey(PK key);
 

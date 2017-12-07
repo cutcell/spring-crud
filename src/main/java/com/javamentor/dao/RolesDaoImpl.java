@@ -4,25 +4,40 @@ import com.javamentor.model.Role;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
 @Transactional
-public class RolesDaoImpl extends CrudDaoImpl<Role, Integer> implements RolesDao {
+public class RolesDaoImpl implements RolesDao {
+
+    @PersistenceContext
+    EntityManager em;
 
     @Override
     public List<Role> getAll() {
-        return emf.createEntityManager().createQuery("from Role").getResultList();
+        return em.createQuery("SELECT r FROM Role r", Role.class).getResultList();
     }
 
     @Override
     public Role findByKey(Integer key) {
-        return emf.createEntityManager().find(Role.class, key);
+        return em.find(Role.class, key);
+    }
+
+    @Override
+    public void persist(Role entity) {
+        em.persist(entity);
+    }
+
+    @Override
+    public void deleteByKey(Integer key) {
+        em.remove(em.find(Role.class, key));
     }
 
     @Override
     public Role getRoleByRoleName(String roleName) {
-        return (Role) emf.createEntityManager().createQuery("SELECT r FROM ROLES AS r WHERE name=:name")
+        return (Role) em.createQuery("SELECT r FROM Role r WHERE r.name=:name")
                 .setParameter("name", roleName)
                 .getSingleResult();
     }
