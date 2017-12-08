@@ -8,9 +8,7 @@ import java.util.List;
 @Entity
 public class Role extends AbstractModel implements GrantedAuthority {
 
-    private static final long serialVersionUID = 3034557457004657465L;
-
-    @Column
+    @Column(name = "name")
     private String name;
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = User.class)

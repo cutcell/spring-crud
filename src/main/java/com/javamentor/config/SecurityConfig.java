@@ -12,9 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-//@Configuration
-//@EnableWebSecurity
-//@ComponentScan("com.javamentor")
+@Configuration
+@EnableWebSecurity
+@ComponentScan("com.javamentor")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -36,17 +36,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
         filter.setEncoding("UTF-8");
         filter.setForceEncoding(true);
-        // отключена защита csrf на время тестов
-        http.csrf().disable().addFilterBefore(filter, CsrfFilter.class);
+
+//        http.csrf().disable().addFilterBefore(filter, CsrfFilter.class);
 
         http.authorizeRequests()
-                .antMatchers("/*").hasAnyAuthority("USER", "ADMIN")
-                .antMatchers("/adm/**").hasAuthority("ADMIN")
+                .antMatchers("/*").permitAll()
+                .and().authorizeRequests().antMatchers("/adm/**").hasAuthority("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login").usernameParameter("login").passwordParameter("password")
-                .failureUrl("/login?error")
-                .successHandler(authSuccessHandler);
+                .successHandler(authSuccessHandler)
+                .permitAll()
+                .and().logout().permitAll()
+                .and().csrf().disable();
 
     }
 }

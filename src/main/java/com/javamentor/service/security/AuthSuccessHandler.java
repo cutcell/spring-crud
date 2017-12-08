@@ -28,9 +28,10 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
 
     }
 
-    private void handle(HttpServletRequest req, HttpServletResponse resp, Authentication auth) {
+    private void handle(HttpServletRequest req, HttpServletResponse resp, Authentication auth) throws IOException {
 
         String targetUrl = getTargetUrl(auth);
+        redirectStrategy.sendRedirect(req, resp, targetUrl);
 
     }
 
@@ -47,9 +48,9 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
         Collection<?> authorities = auth.getAuthorities();
 
         if (authorities.contains(new Role("ADMIN"))) {
-            return "/adm";
+            return "/adm/view";
         } else if (authorities.contains(new Role("USER"))) {
-            return "/index";
+            return "/home";
         } else {
             throw new IllegalStateException();
         }

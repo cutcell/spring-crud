@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
     <title>Users</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">

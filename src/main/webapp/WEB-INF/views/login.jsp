@@ -19,7 +19,7 @@
 <section>
 
     <div class="container">
-        <c:url value="/login" var="loginUrl"/>
+        <c:url var="loginUrl" value="/login" />
         <form:form class="form-horizontal" action="${loginUrl}" method="post">
 
             <c:if test="${param.error != null}">
@@ -55,6 +55,7 @@
                 </div>
             </div>
 
+            <input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
             <div class="form-group row">
                 <div class="col-sm-4">
                     <button class="btn btn-primary" type="submit">Login</button>
